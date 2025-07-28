@@ -7,6 +7,8 @@ A lightweight TypeScript library for creating and parsing MIDI messages using Ui
 1.  Minimizing any type conversion or copying of the Uint8Array provided by the native layer.
 2.  Using bitwise logic to ensure fast evaluation of MIDI messages.
 
+**[Demo](https://dopry.github.io/web-midi-utils/)**
+
 ## Requirements
 
 - Node.js 18+ (maintenance and active LTS versions only)
