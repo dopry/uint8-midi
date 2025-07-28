@@ -59,8 +59,14 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>MIDI Device Explorer</h1>
-        <p>Connect and interact with MIDI devices in your browser</p>
+        <h1>Web Midi Utils Demo</h1>
+        <p>
+          Connect and interact with MIDI devices in your browser using the{' '}
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API">
+            Web MIDI API
+          </a>{' '}
+          +<a href="https://github.com/dopry/web-midi-utils">Web Midi Utils</a>
+        </p>
       </header>
 
       <StatusIndicator

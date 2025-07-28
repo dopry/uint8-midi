@@ -35,6 +35,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) f
 - `docs:`, `style:`, `refactor:`, `test:`, `chore:` → No version bump
 
 Examples:
+
 ```
 feat: add support for system exclusive messages
 fix: correct channel nibble calculation
@@ -65,6 +66,16 @@ npm run format
 
 # Check if code is formatted
 npm run format:check
+```
+
+## Local Demo
+
+### Running Locally
+
+```bash
+cd examples/react-demo
+npm install
+npm run dev
 ```
 
 ## CI/CD Setup
@@ -115,6 +126,7 @@ Releases are fully automated via GitHub Actions:
 ## Package Configuration
 
 The package is configured with:
+
 - **Main entry**: `dist/index.js` (CommonJS)
 - **Types**: `dist/index.d.ts` (TypeScript declarations)
 - **Files included**: `dist/`, `README.md`, `LICENSE`
@@ -125,11 +137,13 @@ The package is configured with:
 ### Node.js Version Policy
 
 This project officially supports only Node.js maintenance and active LTS versions:
+
 - **Node.js 18.x**: Maintenance LTS (supported until April 2025)
-- **Node.js 20.x**: Active LTS (supported until April 2026)  
+- **Node.js 20.x**: Active LTS (supported until April 2026)
 - **Node.js 22.x**: Current/Active LTS (supported until April 2027)
 
 We do not support:
+
 - End-of-life Node.js versions
 - Odd-numbered Node.js versions (development releases)
 - Pre-LTS current versions (before they become LTS)
@@ -137,22 +151,26 @@ We do not support:
 ## Troubleshooting
 
 ### NPM Publishing Issues
+
 - Verify your NPM token has the correct permissions
 - Check that the package name is available on NPM
 - Ensure you're not behind a firewall blocking NPM
 
 ### GitHub Actions Issues
+
 - Check that your repository has the correct secrets configured
 - Verify the GitHub token has sufficient permissions
 - Review the Actions logs for specific error messages
 
 ### Version Not Bumping
+
 - Ensure your commit messages follow the conventional commit format
 - Check that you're pushing to the `main` branch
 - Verify there are semantic commits since the last release
 - Check GitHub releases to see if a version was already created
 
 ### Release Notes
+
 - Release notes are automatically generated and published to GitHub releases
 - No CHANGELOG.md file is maintained in the repository
 - View release history at: https://github.com/dopry/web-midi-utils/releases
