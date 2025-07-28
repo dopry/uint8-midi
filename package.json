@@ -2,8 +2,16 @@
   "name": "web-midi-utils",
   "version": "0.0.0-development",
   "description": "A lightweight TypeScript library for creating and parsing MIDI messages using Uint8Array",
+  "type": "module",
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist",
     "README.md",
@@ -14,9 +22,9 @@
     "build:watch": "tsc --watch",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run clean && npm run build",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
@@ -32,8 +40,8 @@
     "uint8array",
     "typescript",
     "music",
-    "audio",
-    "realtime"
+    "realtime",
+    "Web MIDI API"
   ],
   "author": "dopry",
   "license": "MIT",
@@ -42,16 +50,15 @@
   },
   "homepage": "https://github.com/dopry/web-midi-utils#readme",
   "devDependencies": {
-    "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "eslint": "^8.56.0",
-    "jest": "^29.7.0",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "semantic-release": "^23.0.2",
-    "ts-jest": "^29.1.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18"

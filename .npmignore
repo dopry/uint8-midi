@@ -3,6 +3,9 @@ src/
 *.test.ts
 *.spec.ts
 
+# Examples and demos
+examples/
+
 # Development files
 .github/
 .vscode/
