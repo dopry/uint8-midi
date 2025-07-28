@@ -1,9 +1,11 @@
 # web-midi-utils
 
-A lightweight TypeScript library for creating and parsing MIDI messages using Uint8Array. It is designed to work with the [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) in the browser. It has been designed with performance in mind by: 
+**1.x release series will be unstable and will have breaking changes. Upon 2.x the projects will begin following semantic versioning**
 
-   1. Minimizing any type conversion or copying of the Uint8Array provided by the native layer.
-   2. Using bitwise logic to ensure fast evaluation of MIDI messages. 
+A lightweight TypeScript library for creating and parsing MIDI messages using Uint8Array. It is designed to work with the [Web MIDI API](https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API) in the browser. It has been designed with performance in mind by:
+
+1.  Minimizing any type conversion or copying of the Uint8Array provided by the native layer.
+2.  Using bitwise logic to ensure fast evaluation of MIDI messages.
 
 ## Requirements
 
@@ -47,7 +49,12 @@ console.log(cc) // Uint8Array(3) [176, 7, 100]
 ### Parsing MIDI Messages
 
 ```typescript
-import { isNoteOn, isNoteOff, isControlChange, getChannel } from 'web-midi-utils'
+import {
+  isNoteOn,
+  isNoteOff,
+  isControlChange,
+  getChannel,
+} from 'web-midi-utils'
 
 const message = new Uint8Array([144, 60, 127])
 
@@ -64,7 +71,13 @@ if (isNoteOn(message)) {
 The library provides type guards for safe message handling:
 
 ```typescript
-import { isDataMessage, isSystemMessage, isStart, isStop, getChannel } from 'web-midi-utils'
+import {
+  isDataMessage,
+  isSystemMessage,
+  isStart,
+  isStop,
+  getChannel,
+} from 'web-midi-utils'
 
 function handleMIDIMessage(message: Uint8Array) {
   if (isDataMessage(message)) {
@@ -109,6 +122,10 @@ function handleMIDIMessage(message: Uint8Array) {
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, guidelines, and release process.
+
+## Demo
+
+Check out the [browser demo](examples/browser-demo/) to see web-midi-utils in action with live MIDI device detection and message parsing.
 
 ## License
 
