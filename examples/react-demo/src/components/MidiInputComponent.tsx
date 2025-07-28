@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { MidiMessage } from './MidiMessage'
-import { MidiPort } from './DeviceInfo'
+import { MidiPortComponent } from './MidiPortComponent'
 import {
   isNoteOn,
   isNoteOff,
@@ -17,7 +17,7 @@ import {
   getPolyphonicAftertouchNote,
   getPolyphonicAftertouchPressure,
   getChannelAftertouchPressure,
-  isSystemMessage
+  isSystemMessage,
 } from 'web-midi-utils'
 
 interface MIDIMessageInfo {
@@ -31,20 +31,22 @@ interface MessageData {
   timestamp: number
 }
 
-interface MidiInputDeviceProps {
-  device: MIDIInput
+interface MidiInputComponentProps {
+  port: MIDIInput
 }
 
-export const MidiInputDevice: React.FC<MidiInputDeviceProps> = ({ device }) => {
+export const MidiInputComponent: React.FC<MidiInputComponentProps> = ({
+  port,
+}) => {
   const [messageHistory, setMessageHistory] = useState<MessageData[]>([])
 
   const parseMIDIMessage = useCallback((data: Uint8Array): MIDIMessageInfo => {
     let type = 'Unknown'
     let description = ''
-    
+
     if (isChannelMessage(data)) {
       const channel = getChannel(data)
-      
+
       if (isNoteOn(data)) {
         type = 'Note On'
         description = `Channel ${channel}, Note ${data[1]}, Velocity ${data[2]}`
@@ -86,40 +88,45 @@ export const MidiInputDevice: React.FC<MidiInputDeviceProps> = ({ device }) => {
         description = `Status: 0x${data[0]?.toString(16).toUpperCase()}`
       }
     } else {
-       console.warn("Unsupported MIDI message received, this should be an impossible condition as isSystemMessage is checked and isChannelMessage are inverse checks")
-       type = 'Unsupported Message'
-       if (data.length > 0) {
-         description = `Status: 0x${data[0]?.toString(16).toUpperCase()}`
-       }
+      console.warn(
+        'Unsupported MIDI message received, this should be an impossible condition as isSystemMessage is checked and isChannelMessage are inverse checks'
+      )
+      type = 'Unsupported Message'
+      if (data.length > 0) {
+        description = `Status: 0x${data[0]?.toString(16).toUpperCase()}`
+      }
     }
     return { type, description }
   }, [])
 
-  const handleMIDIMessage = useCallback((event: any) => {
-    const messageData: MessageData = {
-      data: new Uint8Array(event.data),
-      parsed: parseMIDIMessage(new Uint8Array(event.data)),
-      timestamp: event.timeStamp
-    }
+  const handleMIDIMessage = useCallback(
+    (event: any) => {
+      const messageData: MessageData = {
+        data: new Uint8Array(event.data),
+        parsed: parseMIDIMessage(new Uint8Array(event.data)),
+        timestamp: event.timeStamp,
+      }
 
-    setMessageHistory(prev => [...prev, messageData])
-  }, [parseMIDIMessage])
+      setMessageHistory((prev) => [...prev, messageData])
+    },
+    [parseMIDIMessage]
+  )
 
   useEffect(() => {
-    if (device.state === 'connected') {
-      device.addEventListener('midimessage', handleMIDIMessage)
+    if (port.state === 'connected') {
+      port.addEventListener('midimessage', handleMIDIMessage)
       return () => {
-        device.removeEventListener('midimessage', handleMIDIMessage)
+        port.removeEventListener('midimessage', handleMIDIMessage)
       }
     }
-  }, [device, handleMIDIMessage])
+  }, [port, handleMIDIMessage])
 
   const recentMessages = messageHistory.slice(-5) // Show last 5 messages
 
   return (
     <div className="device-card">
-      <MidiPort port={device} />
-      
+      <MidiPortComponent port={port} />
+
       <div className="device-messages">
         <div className="message-title">
           Recent Messages ({messageHistory.length} total)

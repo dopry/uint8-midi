@@ -1,6 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
-import { DeviceCard, StatusIndicator } from './components'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
+import {
+  MidiInputComponent,
+  MidiOutputComponent,
+  StatusIndicator,
+} from './components'
 
 function App() {
   const [midiAccess, setMidiAccess] = useState<any | null>(null)
@@ -15,16 +19,19 @@ function App() {
     setOutputs(newOutputs)
   }, [])
 
-  const setupMIDIHandlers = useCallback((access: any) => {
-    // Handle state changes (device connect/disconnect)
-    access.onstatechange = (event: any) => {
-      console.log('Device state change:', event.port.name, event.port.state)
+  const setupMIDIHandlers = useCallback(
+    (access: any) => {
+      // Handle state changes (device connect/disconnect)
+      access.onstatechange = (event: any) => {
+        console.log('Device state change:', event.port.name, event.port.state)
+        updateDeviceStates(access)
+      }
+
+      // Initialize device states
       updateDeviceStates(access)
-    }
-    
-    // Initialize device states
-    updateDeviceStates(access)
-  }, [updateDeviceStates])
+    },
+    [updateDeviceStates]
+  )
 
   const requestMIDIAccess = async () => {
     try {
@@ -38,7 +45,10 @@ function App() {
         console.error('Web MIDI API not supported')
       }
     } catch (error) {
-      console.error('MIDI Access Error:', error instanceof Error ? error.message : 'Unknown error')
+      console.error(
+        'MIDI Access Error:',
+        error instanceof Error ? error.message : 'Unknown error'
+      )
     }
   }
 
@@ -53,7 +63,7 @@ function App() {
         <p>Connect and interact with MIDI devices in your browser</p>
       </header>
 
-      <StatusIndicator 
+      <StatusIndicator
         isSupported={!!navigator.requestMIDIAccess}
         isEnabled={isConnected}
       />
@@ -73,21 +83,17 @@ function App() {
             </div>
           ) : inputs.length === 0 && outputs.length === 0 ? (
             <div className="no-devices">
-              <p>No MIDI devices detected. Connect a MIDI device and try again.</p>
+              <p>
+                No MIDI devices detected. Connect a MIDI device and try again.
+              </p>
             </div>
           ) : (
             <>
               {inputs.map((input: any) => (
-                <DeviceCard
-                  key={input.id}
-                  port={input}
-                />
+                <MidiInputComponent key={input.id} port={input} />
               ))}
               {outputs.map((output: any) => (
-                <DeviceCard
-                  key={output.id}
-                  port={output}
-                />
+                <MidiOutputComponent key={output.id} port={output} />
               ))}
             </>
           )}
